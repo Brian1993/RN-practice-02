@@ -5,6 +5,7 @@ import { COLORS } from '../constants'
 const Input = props => {
   return <TextInput
     {...props}
+    keyboardType={'number-pad'}
     style={{ ...styles.input, ...props.style }}
   />
 };

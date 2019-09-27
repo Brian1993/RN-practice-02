@@ -5,13 +5,16 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   // 不是 component, 是 react native 為方便 keyboard 操作的 api, 
-  Keyboard
+  Keyboard,
+  // 不是 component
+  Alert
 } from 'react-native';
 import Card from '../components/Card'
 import Button from '../components/Button'
 import Input from '../components/Input'
 
 import { COLORS } from '../constants'
+import { reset } from 'expo/build/AR';
 
 const StartGameScreen = (props) => {
   const [enteredValue, setEnterValue] = useState('');
@@ -29,7 +32,12 @@ const StartGameScreen = (props) => {
 
   const comfirmInputHandler = () => {
     const choseNumber = parseInt(enteredValue)
-    if (choseNumber === NaN || choseNumber <= 0 || choseNumber > 99) {
+    if (isNaN(choseNumber) || choseNumber <= 0 || choseNumber > 99) {
+      Alert.alert(
+        'Invalid Number', 
+        'Number has be a number between 1 and 99',
+        [{ text: 'Okay', style: 'destructive', onPress: resetInputHandler }]
+      )
       return;
     }
     
@@ -41,7 +49,20 @@ const StartGameScreen = (props) => {
   const renderComfirmedOutput = () => {
     let confirmedOutput
     if (isComfirmed) {
-      confirmedOutput = <Text>Chosen Number: {selectedNumber}</Text>
+      confirmedOutput = (
+        <View style={styles.result}>
+          <View style={styles.resultContent}>
+            <Text>Chosen Number: {selectedNumber}</Text>
+          </View>
+          <View style={styles.restartContainer}>
+            <Button 
+              title='Restart' 
+              style={styles.restartButton}
+              onPress={resetInputHandler}
+            />
+          </View>
+        </View>
+      );
     }
     return confirmedOutput
   }
@@ -58,7 +79,7 @@ const StartGameScreen = (props) => {
             style={styles.input}
             autoCapitalize='none'
             autoCorrect={false}
-            keyboardType='number-pad'
+            // keyboardType='number-pad'
             maxLength={2}
             onChangeText={numberInputHandler}
             value={enteredValue}
@@ -106,6 +127,28 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     paddingHorizontal: 15,
+  },
+  result: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  resultContent: {
+    marginTop: 20,
+    padding: 10,
+    width: '60%',
+    height: 50,
+    backgroundColor: COLORS.MAIN_COLOR_LIGHT,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  restartContainer: {
+    marginTop: 20
+  },
+  restartButton: {
+    width: 100,
+    padding: 20
   }
 });
 
