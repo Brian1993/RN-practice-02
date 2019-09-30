@@ -9,12 +9,14 @@ import {
   // 不是 component
   Alert
 } from 'react-native';
-import Card from '../components/Card'
-import Button from '../components/Button'
-import Input from '../components/Input'
+import { 
+  Card,
+  Button,
+  Input,
+  NumberContainer
+} from '../components'
 
 import { COLORS } from '../constants'
-import { reset } from 'expo/build/AR';
 
 const StartGameScreen = (props) => {
   const [enteredValue, setEnterValue] = useState('');
@@ -44,24 +46,18 @@ const StartGameScreen = (props) => {
     setComfirm(true);
     setSelectedNumber(choseNumber)
     setEnterValue('')
+    Keyboard.dismiss()
   }
 
   const renderComfirmedOutput = () => {
     let confirmedOutput
     if (isComfirmed) {
       confirmedOutput = (
-        <View style={styles.result}>
-          <View style={styles.resultContent}>
-            <Text>Chosen Number: {selectedNumber}</Text>
-          </View>
-          <View style={styles.restartContainer}>
-            <Button 
-              title='Restart' 
-              style={styles.restartButton}
-              onPress={resetInputHandler}
-            />
-          </View>
-        </View>
+        <Card style={styles.summaryContainer}>
+          <Text>You selected</Text>
+          <NumberContainer>{selectedNumber}</NumberContainer>
+          <Button title='Start' />
+        </Card>
       );
     }
     return confirmedOutput
@@ -79,7 +75,7 @@ const StartGameScreen = (props) => {
             style={styles.input}
             autoCapitalize='none'
             autoCorrect={false}
-            // keyboardType='number-pad'
+            keyboardType='number-pad'
             maxLength={2}
             onChangeText={numberInputHandler}
             value={enteredValue}
@@ -128,6 +124,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 15,
   },
+  summaryContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  
+
+
+
+
+
+
   result: {
     width: '100%',
     justifyContent: 'center',
