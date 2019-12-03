@@ -14,7 +14,7 @@ const generateRandomBetween = (min, max, exclude) => {
 
 const GameScreen = props => {
   const [currentGuess, setCurrentGuess ] = useState(generateRandomBetween(1, 100, props.userChoice));
-
+  const test = ''
   return (
     <View>
       <Text>Oppnets's Guess</Text>
